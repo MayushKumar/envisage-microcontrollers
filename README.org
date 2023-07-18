@@ -1,4 +1,9 @@
 #+title:  Envisage 12.0 - Microcontrollers Module
 
-* Test
-Test text.
+* What even is a microcontroller?
+A microcontroller is basically a small computer, whose main job is to control electronics. Just like your normal computers, it has a CPU, some RAM and some flash memory to store your program. It also has programmable IO (Input/Ouput) pins. These pins are what helps them 'control' your electronics. There are tons of microcontrollers available in the market. The most popular one being the Arduino UNO. Now just to clarify, Arduino UNO is not actually the microcontroller, rather, it is just a 'development board' built around the ATmega328P microcontroller. Development boards make it easy for us to work with microcontrollers, as they have additional circuits designed to help run and program them.
+
+#+ATTR_ORG: :width 200
+[[file:imgs/arduino-uno.jpg]]
+
+* Getting the Arduino IDE
