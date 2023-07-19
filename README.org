@@ -16,3 +16,38 @@ We will be using Tinkercad throughout this module for easy simulations. Go [[htt
 Let's start with the 'Hello World' of microcontrollers, ie, blinking an LED. Go to [[https://www.tinkercad.com/things/7yLiom529nh?sharecode=YH0h8LwFxTxKPVEX33UE6I2a3gyqSZu9YfV1jaytJTc][this]] example. Click on 'Tinker this' and then 'Start Simulation'. Click on 'Code' to see the magic behind all of it. As you can see, the code is made up of two 'functions', namely ~void setup()~ and ~void loop()~. The important part:
 - ~void setup()~ : Runs *once* at the *start*.
 - ~void loop()~ : Obviously, keeps running in a *loop*.
+
+Now, a very important reference image:
+#+ATTR_ORG: :width 200
+[[file:imgs/arduino_uno3_pinout.png]]
+I would suggest you to always keep this handy while working with your Arduino UNO.
+Each pin on your microcontroller serves a purpose, and majority of them, can be used in a variety of ways. As you can see in the image, ~D8~ is our pin number 8, which has been marked as a ~Digital Pin~, which means you can turn it ~HIGH~ or ~LOW~. Now, as Arduino UNO runs on 5V:
+- ~HIGH~ / ~ON~ means 5V
+- ~LOW~ / ~OFF~ means Ground
+
+Before you start using a pin, you need set the mode of the pin to tell the microcontroller how you intend on using it.
+
+#+begin_src cpp
+void setup()
+{
+  pinMode(8, OUTPUT);
+}
+#+end_src
+
+This, at the start, sets the mode of pin 8 to ~Digital Out~, ie, you can turn it on or off.
+
+#+begin_src cpp
+void loop()
+{
+  digitalWrite(8, HIGH);
+  delay(1000);
+  digitalWrite(8, LOW);
+  delay(1000);
+}
+#+end_src
+
+This first turns the pin 8 ~HIGH~ and then *waits* for 1000 *miliseconds*, ie, 1 second. Then it turns the pin ~LOW~ and again waits 1 second. After that, the cycle continues indefinitely, and we get a blinking LED!
+(Notice that we have a current limiting resistor in series with our LED so that it does not burn up).
+
+
+
