@@ -6,4 +6,13 @@ A microcontroller is basically a small computer, whose main job is to control el
 #+ATTR_ORG: :width 200
 [[file:imgs/arduino-uno.jpg]]
 
-* Getting the Arduino IDE
+* Setup
+** Arduino IDE
+The Arduino IDE is the most common program that you will be using while working with an Arduino (and many other microcontrollers). You can download it from [[https://www.arduino.cc/en/software][here.]]
+** Tinkercad
+We will be using Tinkercad throughout this module for easy simulations. Go [[https://www.tinkercad.com/][here]] and make an account if u don't have one.
+
+* Blink Blink!
+Let's start with the 'Hello World' of microcontrollers, ie, blinking an LED. Go to [[https://www.tinkercad.com/things/7yLiom529nh?sharecode=YH0h8LwFxTxKPVEX33UE6I2a3gyqSZu9YfV1jaytJTc][this]] example. Click on 'Tinker this' and then 'Start Simulation'. Click on 'Code' to see the magic behind all of it. As you can see, the code is made up of two 'functions', namely ~void setup()~ and ~void loop()~. The important part:
+- ~void setup()~ : Runs *once* at the *start*.
+- ~void loop()~ : Obviously, keeps running in a *loop*.
