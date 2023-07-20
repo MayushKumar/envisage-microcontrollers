@@ -10,7 +10,7 @@ A microcontroller is basically a small computer, whose main job is to control el
 ** Arduino IDE
 The Arduino IDE is the most common program that you will be using while working with an Arduino (and many other microcontrollers). You can download it from [[https://www.arduino.cc/en/software][here.]]
 ** Tinkercad
-We will be using Tinkercad throughout this module for easy simulations. Go [[https://www.tinkercad.com/][here]] and make an account if u don't have one.
+We will be using Tinkercad throughout this module for easy simulations. Go [[https://www.tinkercad.com/][here]] and make an account if you don't have one already.
 
 * Blink Blink!
 Let's start with the 'Hello World' of microcontrollers, ie, blinking an LED. Go to [[https://www.tinkercad.com/things/7yLiom529nh?sharecode=YH0h8LwFxTxKPVEX33UE6I2a3gyqSZu9YfV1jaytJTc][this]] example. Click on 'Tinker this' and then 'Start Simulation'. Click on 'Code' to see the magic behind all of it. As you can see, the code is made up of two 'functions', namely ~void setup()~ and ~void loop()~. The important part:
@@ -34,7 +34,7 @@ void setup()
 }
 #+end_src
 
-This, at the start, sets the mode of pin 8 to ~Digital Out~, ie, you can turn it on or off.
+This, at the start, sets the mode of pin 8 to ~OUTPUT~, ie, you can turn it on or off.
 
 #+begin_src cpp
 void loop()
@@ -49,5 +49,36 @@ void loop()
 This first turns the pin 8 ~HIGH~ and then *waits* for 1000 *miliseconds*, ie, 1 second. Then it turns the pin ~LOW~ and again waits 1 second. After that, the cycle continues indefinitely, and we get a blinking LED!
 (Notice that we have a current limiting resistor in series with our LED so that it does not burn up).
 
+* Controlling the brightness (PWM)
+Let's try to vary the brightness of the LED. Arduino UNO doesn't have a Digtal-to-Analog Converter (DAC), so we cannot get a true analog output. Look up the difference between digital and analog if you do not know. Arduino UNO can produce a PWM signal, which in most cases can be used as an alternative to true analog output. Pins that support PWM output are marked with a tilde (~) before their number. Looking at the pinout diagram, we see that pin 6 is one of such pins. Look at [[https://www.tinkercad.com/things/bdQUfL8nFGX][this]] simulation.
 
+#+begin_src cpp
+#define LED_PIN 6
 
+byte brightness = 0;
+#+end_src
+
+The first line basically means - "replace every occurence of ~LED_PIN~ with the number 6."
+Next, we define a variable of the type ~byte~, and initialize it to zero. Go [[https://www.arduino.cc/reference/en/#variables][here]] to see all the datatypes available to you. As you can see from the documentation, a ~byte~ stores values from 0 to 255.
+
+#+begin_src cpp
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+}
+#+end_src
+
+This is the same as before.
+
+#+begin_src cpp
+void loop()
+{
+  analogWrite(LED_PIN, brightness);
+  delay(10);
+  brightness++;
+}
+#+end_src
+
+Now, for the ~analogWrite~ function, a value of 0 corresponds to a PWM signal with 0% duty cycle (ie completely off) and it linearly goes up to 255, which corresponds to a PWM signal with 100% duty cycle (ie fully on). The last line simply means 'add 1 to the ~brightness~ variable'.
+
+As a result, the brightness of the LED increases with time. Note that brightness suddenly drops to zero. This is due to something called the 'Integer Overflow'. Basically, when the value of ~brightness~ is 255, and we try to add 1 to it, the result comes out to be 256, but as a byte can only store values upto 255, it loops around to 0. Therefore, the value of ~brightness~ becomes 0, and hence the LED also turns off momentarily.
