@@ -81,4 +81,49 @@ void loop()
 
 Now, for the ~analogWrite~ function, a value of 0 corresponds to a PWM signal with 0% duty cycle (ie completely off) and it linearly goes up to 255, which corresponds to a PWM signal with 100% duty cycle (ie fully on). The last line simply means 'add 1 to the ~brightness~ variable'.
 
-As a result, the brightness of the LED increases with time. Note that brightness suddenly drops to zero. This is due to something called the 'Integer Overflow'. Basically, when the value of ~brightness~ is 255, and we try to add 1 to it, the result comes out to be 256, but as a byte can only store values upto 255, it loops around to 0. Therefore, the value of ~brightness~ becomes 0, and hence the LED also turns off momentarily.
+As a result, the brightness of the LED increases with time. Note that brightness suddenly drops to zero. This is due to something called the 'Integer Overflow'. Basically, when the value of ~brightness~ is 255, and we try to add 1 to it, the result comes out to be 256, but as a byte can only store values upto 255, it loops around to 0. Therefore, the value of ~brightness~ becomes 0, and hence the LED also turns off momentarily. Then the cycle continues.
+
+* Taking Input
+Let's say you want to toggle the LED using a push button. When you press the push button once, the LED turns on, and when you push it again, it turns off. Take a look at [[https://www.tinkercad.com/things/7d9I7yvRSFt?sharecode=KAvfMvGXEoZxRTrKHadUxNMdmYC5G_slGOxGO9bAvtQ][this]] simulation.
+Try to push the button a few times.
+
+#+begin_src cpp
+#define LED_PIN 4
+#define BUTTON_PIN 2
+
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT);
+}
+#+end_src
+
+General setup. Note that the ~pinMode~ of ~BUTTON_PIN~ has been set to ~INPUT~.
+
+#+begin_src cpp
+bool led_state = false;
+bool prev_button_state = false;
+#+end_src
+
+We create two variables of type ~bool~ (check the official reference provided earlier if you don't know what that means).
+
+#+begin_src cpp
+void loop()
+{
+  bool button_state = !digitalRead(BUTTON_PIN);
+  if(prev_button_state == false && button_state == true)
+  {
+    led_state = !led_state;
+    digitalWrite(LED_PIN, led_state);
+  }
+  prev_button_state = button_state;
+}
+#+end_src
+
+OK, we have a lot going on here. So first we use the ~digitalRead~ function to read the state of the button. The function returns ~true~ (or 1) if the ~BUTTON_PIN~ is connected to 5V, and ~false~ (or 0) if it is connected to ground. Note that when we press the button, the pin gets connected to ground, whereas by default it is connected to 5V (using the pull-up resistor). As this would give us ~false~ when we press the button, we have added an exclamation mark in front of the function call, which simply inverts the output. Therefore, now when we press the button, ~button_state~ will be set to ~true~.
+
+~prev_button_state~ corresponds to the state of the button during the *previous iteration* of the loop. ~button_state~ corresponds to the current state. We set ~prev_button_state~ equal to ~button_state~ at the end of the loop.
+
+Now, if the previous state of the button was ~false~ (unpressed), but now is ~true~ (pressed), we have detected a button press. Then, we toggle the ~led_state~ variable (set to its opposite using the exclamation mark). Then we write the ~led_state~ to ~LED_PIN~. As you can see, you can use ~true~ / ~false~ instead of ~HIGH~ / ~LOW~. ~HIGH~ is basically the number 1 and ~LOW~ is the number 0. You can use any non-zero number for the ~HIGH~ state, as anything non-zero is ~true~, whereas zero is ~false~.
+
+Note that we can remove the pull-up resistor as Arduino also comes with a builtin one. To use the builtin pull-up resistor, set the ~pinMode~ of ~BUTTON_PIN~ to ~INPUT_PULLUP~. Go [[https://www.mouser.com/blog/dont-leave-your-pins-floating][here]] to learn about floating-pins and pull-up/pull-down resistors.
