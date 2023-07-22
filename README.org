@@ -62,21 +62,21 @@ The first line basically means - "replace every occurence of ~LED_PIN~ with the 
 Next, we define a variable of the type ~byte~, and initialize it to zero. Go [[https://www.arduino.cc/reference/en/#variables][here]] to see all the datatypes available to you. As you can see from the documentation, a ~byte~ stores values from 0 to 255.
 
 #+begin_src cpp
-void setup()
-{
-  pinMode(LED_PIN, OUTPUT);
-}
+  void setup()
+  {
+    pinMode(LED_PIN, OUTPUT);
+  }
 #+end_src
 
 This is the same as before.
 
 #+begin_src cpp
-void loop()
-{
-  analogWrite(LED_PIN, brightness);
-  delay(10);
-  brightness++;
-}
+  void loop()
+  {
+    analogWrite(LED_PIN, brightness);
+    delay(10);
+    brightness++;
+  }
 #+end_src
 
 Now, for the ~analogWrite~ function, a value of 0 corresponds to a PWM signal with 0% duty cycle (ie completely off) and it linearly goes up to 255, which corresponds to a PWM signal with 100% duty cycle (ie fully on). The last line simply means 'add 1 to the ~brightness~ variable'.
@@ -93,8 +93,8 @@ Try to push the button a few times.
 
   void setup()
   {
-  	pinMode(LED_PIN, OUTPUT);
-  	pinMode(BUTTON_PIN, INPUT);
+    pinMode(LED_PIN, OUTPUT);
+    pinMode(BUTTON_PIN, INPUT);
   }
 #+end_src
 
@@ -110,13 +110,13 @@ We create two variables of type ~bool~ (check the official reference provided ea
 #+begin_src cpp
   void loop()
   {
-  	bool button_state = !digitalRead(BUTTON_PIN);
-  	if(prev_button_state == false && button_state == true)
-  	{
-  		led_state = !led_state;
-  		digitalWrite(LED_PIN, led_state);
-  	}
-  	prev_button_state = button_state;
+    bool button_state = !digitalRead(BUTTON_PIN);
+    if(prev_button_state == false && button_state == true)
+    {
+      led_state = !led_state;
+      digitalWrite(LED_PIN, led_state);
+    }
+    prev_button_state = button_state;
   }
 #+end_src
 
@@ -156,7 +156,7 @@ Let's send and receive messages from our Arduino. There are a number of communic
     {
        brightness = Serial.parseInt();
        Serial.println(brightness);
-  	 analogWrite(LED_PIN, brightness);
+       analogWrite(LED_PIN, brightness);
     }
   }
 #+end_src
