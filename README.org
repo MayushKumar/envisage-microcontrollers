@@ -165,3 +165,14 @@ if ~Serial.available~ is greater than 0, it means that we have received some inp
 
 I highly suggest you to go through the official documentation of the serial communication [[https://www.arduino.cc/reference/en/language/functions/communication/serial/][here]] to learn about all the different functions available to you. Also, you can look up a tutorial about this.
 
+* Additional References
+Everything till now has just given you an idea of what using a microcontroller looks like. Here are some links that will help you move forward in your journey of microcontrollers. 
+- [[https://docs.arduino.cc/software/ide-v2/tutorials/getting-started-ide-v2][Learning the IDE]]
+- [[https://www.makeuseof.com/tag/arduino-beginner-mistakes/][General mistakes]]
+- Our program for digital input is [[https://youtu.be/jYOYgU2vlSE][WRONG]]
+- [[https://youtu.be/DlG6LY84MUU][Types of sensors]]
+- [[https://youtu.be/J61_PKyWjxU][Interrupts]]
+- [[https://youtu.be/6q1yEb_ukw8][Registers]]
+
+* Other Microcontrollers
+Arduino UNO, although being very popular, is not the perfect fit for every project. There are tons of other microcontrollers that you should consider. Most important in our case would be the esp32. It has a faster processor, and builtin wifi and bluetooth support, being cheap at the same time. Be sure to take a look at it, as it is probably the microcontroller you would be using in your projects. Other microcontrollers are the Arduino Mega, Arduino Nano, etc.

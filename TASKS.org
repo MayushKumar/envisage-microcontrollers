@@ -1,0 +1,8 @@
+* Task 1
+Learn about I2C communication online. Make a simulation using two Arduinos. One Arduino has a potentiometer connected to it, while the other has an LED. You should be able to control the brightness of the LED using the potentiometer (similar to what we did in our example simulations).
+
+* Task 2
+Learn to use a NeoPixel strip with an Arduino online. Make a simulation using a 'NeoPixel Strip 10'. Initially, all the LEDs should be off. On pressing a push button, the first LED should turn on (use any color that you like). On pushing the button again, the previously on LED should turn off, and the next LED should turn on, and so on.
+
+* Task 3
+You want to build a robot, which has two wheels, and balances on its own. You can drive it with your smartphone wirelessly. It should have a buzzer that alarms the user when the robot gets hit accidentally. What are the parts that you would use to build this robot (sensors, hardware everything).
