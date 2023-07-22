@@ -88,14 +88,14 @@ Let's say you want to toggle the LED using a push button. When you press the pus
 Try to push the button a few times.
 
 #+begin_src cpp
-#define LED_PIN 4
-#define BUTTON_PIN 2
+  #define LED_PIN 4
+  #define BUTTON_PIN 2
 
-void setup()
-{
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT);
-}
+  void setup()
+  {
+  	pinMode(LED_PIN, OUTPUT);
+  	pinMode(BUTTON_PIN, INPUT);
+  }
 #+end_src
 
 General setup. Note that the ~pinMode~ of ~BUTTON_PIN~ has been set to ~INPUT~.
@@ -108,16 +108,16 @@ bool prev_button_state = false;
 We create two variables of type ~bool~ (check the official reference provided earlier if you don't know what that means).
 
 #+begin_src cpp
-void loop()
-{
-  bool button_state = !digitalRead(BUTTON_PIN);
-  if(prev_button_state == false && button_state == true)
+  void loop()
   {
-    led_state = !led_state;
-    digitalWrite(LED_PIN, led_state);
+  	bool button_state = !digitalRead(BUTTON_PIN);
+  	if(prev_button_state == false && button_state == true)
+  	{
+  		led_state = !led_state;
+  		digitalWrite(LED_PIN, led_state);
+  	}
+  	prev_button_state = button_state;
   }
-  prev_button_state = button_state;
-}
 #+end_src
 
 OK, we have a lot going on here. So first we use the ~digitalRead~ function to read the state of the button. The function returns ~true~ (or 1) if the ~BUTTON_PIN~ is connected to 5V, and ~false~ (or 0) if it is connected to ground. Note that when we press the button, the pin gets connected to ground, whereas by default it is connected to 5V (using the pull-up resistor). As this would give us ~false~ when we press the button, we have added an exclamation mark in front of the function call, which simply inverts the output. Therefore, now when we press the button, ~button_state~ will be set to ~true~.
@@ -127,3 +127,41 @@ OK, we have a lot going on here. So first we use the ~digitalRead~ function to r
 Now, if the previous state of the button was ~false~ (unpressed), but now is ~true~ (pressed), we have detected a button press. Then, we toggle the ~led_state~ variable (set to its opposite using the exclamation mark). Then we write the ~led_state~ to ~LED_PIN~. As you can see, you can use ~true~ / ~false~ instead of ~HIGH~ / ~LOW~. ~HIGH~ is basically the number 1 and ~LOW~ is the number 0. You can use any non-zero number for the ~HIGH~ state, as anything non-zero is ~true~, whereas zero is ~false~.
 
 Note that we can remove the pull-up resistor as Arduino also comes with a builtin one. To use the builtin pull-up resistor, set the ~pinMode~ of ~BUTTON_PIN~ to ~INPUT_PULLUP~. Go [[https://www.mouser.com/blog/dont-leave-your-pins-floating][here]] to learn about floating-pins and pull-up/pull-down resistors.
+
+* Analog Input
+What we saw previously was an example of digital input. It can have only two states - on or off. Now we'll look at analog input. Let's control the speed of blinking of an LED using a dial. We use a potentiometer as the dial. [[https://www.tinkercad.com/things/lbPNjauG0rs?sharecode=nKtLbTnHxPgL0AU2SgOSTPBRU1RqRK415TOpddy-JI0][Here]] is the simulation. The code, now should be self-explanatory.
+
+* Talking to your Arduino
+Let's send and receive messages from our Arduino. There are a number of communication protocols popular in the world of microcontrollers, such as UART, I2C, SPI, etc. Arduino uses UART (generally called serial communication) to talk to your system. Go to [[https://www.tinkercad.com/things/lTwGQdxrbMS?sharecode=NLr0DQlRWOJzIW2J4nU-3A1dHY3I8bK-i0v5jfmjpe4][this]] simulation. Go to the code section and click on the 'Serial Monitor' below. Now, enter values from 0 to 255 to change the brightness of the LED. You will also see those values printed back to you.
+
+#+begin_src cpp
+  #define LED_PIN 9
+
+  void setup()
+  {
+    pinMode(LED_PIN, OUTPUT);
+    Serial.begin(9600);
+    Serial.setTimeout(10);
+  }
+#+end_src
+
+~Serial.begin~ function begins the serial communication at a certain baud-rate (9600 in this case). You can learn about baud-rate online, but in general, it's good enough to know that the baud-rate of your Arduino and that of you serial monitor should match (you have to choose a baud-rate in the Arduino IDE). Our serial monitor sends data to the Arduino sequentially. Therefore, we need to set a timeout for the Arduino to know that it can safely end the interpretation of the bytes. It is necessary only for the functions that parse the incoming bytes to a value (such as ~parseFloat~ and ~parseInt~).
+
+#+begin_src cpp
+  byte brightness = 0;
+
+  void loop()
+  {
+    if(Serial.available() > 0)
+    {
+       brightness = Serial.parseInt();
+       Serial.println(brightness);
+  	 analogWrite(LED_PIN, brightness);
+    }
+  }
+#+end_src
+
+if ~Serial.available~ is greater than 0, it means that we have received some input. Then we parse the input stream (which is in form of bytes) into an integer, and store it in our brightness value. Using ~Serial.println~, we print the value back to the user. Then, we simply set the brightness of the LED.
+
+I highly suggest you to go through the official documentation of the serial communication [[https://www.arduino.cc/reference/en/language/functions/communication/serial/][here]] to learn about all the different functions available to you. Also, you can look up a tutorial about this.
+
